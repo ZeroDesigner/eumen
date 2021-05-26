@@ -1,0 +1,80 @@
+Highlighted Features
+====================
+
+1. Variational Algorithms
+
+  * Variational Quantum Eigensolver (VQE).
+  * ADAPT-VQE.
+  * Variational Quantum Simulation (VQS).
+  * Imaginary Time Evolution.
+
+
+2. Wavefunction Ansatze for Chemistry
+
+  * Fermion operator exponentiation for Unitary Coupled Cluster (UCC)
+
+     * Standard UCC with single and double excitations (UCCSD).
+     * UCC with spin paired doubles and fully generalised (occupied and virtual subspaces undistinguished) excitations (k-UpCCGSD and UCCGSD).
+     * Point group symmetry adapted UCCSD.
+
+  * Hardware Efficient Ansatz (HEA).
+
+
+3. Drivers for Classical Parts of Chemistry Simulations
+
+  * PySCF driver.
+  * Closed shell and open shell compatibility (RHF, ROHF, UHF).
+  * Facilities for comparing quantum and classical (e.g. FCI, CCSD, CISD, MP2, HF) methods.
+  * Orbital localisation procedures.
+  * Density Matrix Embedding Theory.
+  * Periodic Boundary Conditions.
+  * Generalised Hubbard and Hubbard dimer models.
+
+
+4. State Vector Simulations and Simulated Backends
+
+  * Matrix algebra routines for fast state vector simulations.
+  * Various matrix operations for quantum algorithm development and benchmarking.
+  * State vector gradients and metric tensors for time evolution.
+  * Qulacs and AerStateBackend hardware simulators (provided by pytket).
+  * Shot-based hardware simulations.
+  * Access to real hardware provided by pytket.
+
+
+5. Fermionic and Bosonic Fock Spaces
+
+  * Operators for symmetric and antisymmetric Hilbert spaces.
+  * Molecular orbital operators.
+  * Momentum-space operators.
+  * Point group symmetry adapted fermion operators.
+  * Fermion-to-qubit mappings -- Jordan-Wigner and Bravyi-Kitaev.
+
+
+6. Minimizers for Cost Function Optimization
+
+  * SciPy minimizer and integrator.
+  * Rotosolve minimizer.
+  * Gradient descent using quantum natural gradients.
+
+
+7. Protocols for Circuit-based Algorithms
+
+  * Hadamard test.
+  * Operator averaging.
+  * Phase shift and mid-circuit measurements.
+  * Swap test and destructive swap test.
+
+
+8. Strategy Modules for Running Algorithms on Real Quantum Hardware
+
+  * Operator expectation values.
+  * Gradient and metric tensor evaluation.
+  * Overlap evaluation.
+  * Subspace expansion techniques.
+
+
+9. Various User Tools
+
+  * File I/O with pickle.
+  * Print circuits to plain text for viewing.
+  * Chemistry visualisation tools, including geometries, orbitals, and charge densities.

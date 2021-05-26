@@ -1,0 +1,221 @@
+Quantum Chemistry
+=================
+
+.. _sec-method-cc:
+
+Coupled Cluster
+---------------
+
+The field of quantum chemistry largely relies on the development of
+methods for approximating the exact the many-electron wavefunction.
+Approximations are needed because of the intrinsic difficulty in solving
+the many-electron Schrödinger equation. The simplest (antisymmetric)
+solution is provided by the Hartree-Fock (HF) method. However, the HF
+method in general fails to provide energies within chemical accuracy due
+to the neglect of electronic correlation, beyond the exchange effects
+between parallel spins obtained by expressing the wavefunction as a
+single antisymmetrized product (Slater determinant) of spin orbitals.
+The next step beyond the HF approximation towards better descriptions of
+correlation involve expanding the wavefunction as a superposition of
+Slater determinants, in which the treatment of correlation is defined by
+the parametrisation of expansion coefficients (and the determinants
+included in the expansion). Including all determinants of the
+:math:`\eta`-electron Fock space in the superposition, and applying this
+linearly to the HF state, is known as full configuration interaction
+(FCI). However, FCI is not size-extensive, and size-extensivity is
+important for accurate descriptions of chemical reaction barriers,
+atomization energies, etc [Bartlett2007]_. A popular
+method of including electronic correlation while maintaining
+size-extensivity is to write the correlated wavefunction using the
+exponential ansatz
+
+.. math::
+
+   \label{eqn4-1}
+       |\Psi\rangle = e^{T}|\text{HF}\rangle,
+
+where :math:`|\text{HF}\rangle` is the HF ground state wavefunction, and
+:math:`T` is the excitation operator, defined as
+
+.. math::
+
+   \label{eqn4-2}
+       T = \sum_{n}^{N}T_{n}
+
+.. math::
+
+   \label{eqn4-2a}
+       T_{1} = \sum_{a,p}t_{a}^{p}c_{p}^{\dagger}c_{a}
+
+.. math::
+
+   \label{eqn4-2b}
+       T_{2} = \sum_{a,b,p,q}t_{a,b}^{p,q}c_{p}^{\dagger}c_{q}^{\dagger}c_{a}c_{b}.
+
+Here, parameters :math:`t_{a}^{p}, t_{a,b}^{p,q}` are excitation
+amplitudes (or cluster amplitudes), and refer to single and double
+excitations, respectively. The set of excitation amplitudes included in
+a calculation can be written as the vector :math:`\vec{t}`. The indices
+:math:`a, b` denote occupied spin orbitals, and :math:`p, q` denote
+unoccupied (virtual) spin orbitals. The fermionic operator
+:math:`c_{a}^{\dagger}` (:math:`c_{a}`) creates (annihilates) an
+electron in spin orbital :math:`a`. This is the coupled cluster (CC)
+method, and the :math:`e^{T}` term is referred to as the cluster
+operator. Truncating this at the level of double excitations defines the
+coupled cluster singles-doubles (CCSD) method, which for many systems of
+interest represents a reasonably good approximation. The CC energy is
+obtained by a projection of the Schrödinger equation
+
+.. math::
+
+   \label{eqn4-3}
+       e^{-T}He^{T}|\text{HF}\rangle = E_{CC}|\text{HF}\rangle
+
+where the second-quantized molecular Hamiltonian is written as (note atomic units are used throughout this documentation)
+
+.. math::
+
+   \label{eqn4-4}
+       H = \sum_{i,j}h_{i,j}c_{i}^{\dagger}c_{j} + \frac{1}{2}\sum_{i,j,k,l}h_{i,j,k,l}c_{i}^{\dagger}c_{j}^{\dagger}c_{k}c_{l} + V_{nuc} ,
+
+:math:`V_{nuc}` is the nuclear (classical) electrostatic repulsion, and
+the one- and two-body electronic terms are obtained from integrals of
+spin-orbitals obtained from a HF calculation
+
+.. math::
+
+   \label{eqn4-5}
+       h_{i,j} = \int{d\mathbf{x}\phi_{i}^{*}(\mathbf{x})\bigg(\frac{-\nabla^{2}}{2}} - \sum_{A}\frac{Z_{A}}{|\mathbf{R}_{A} - \mathbf{r}|}\bigg)\phi_{j}(\mathbf{x})
+
+.. math::
+
+   \label{eqn4-6}
+       h_{i,j,k,l} = \int{d\mathbf{x}_{1}d\mathbf{x}_{2}\frac{\phi_{i}^{*}(\mathbf{x}_{1})\phi_{j}^{*}(\mathbf{x}_{2})\phi_{k}(\mathbf{x}_{1})\phi_{l}(\mathbf{x}_{2})}{|\mathbf{r}_{1} - \mathbf{r}_{2}|}}.
+
+The index :math:`A` labels atoms, :math:`Z` is the nuclear charge,
+:math:`R` is the atomic position in space, and :math:`\mathbf{r}` is the
+electronic spatial coordinate. The variable :math:`\mathbf{x}`
+represents the collection of spatial and spin coordinates
+:math:`\mathbf{x} = \{\mathbf{r}, s\}`. Unfortunately, the cluster
+operator is not unitary, which is required for the method to be
+variational. By rewriting the linear operator :math:`T` as an anti-hermitian operator :math:`T - T^\dagger`,
+the cluster operator then becomes unitary and we have the unitary coupled cluster (UCC)
+method. The correlated wavefunction relative to the HF state then becomes
+
+.. math::
+
+   \label{eqn4-7}
+        |\Psi\rangle = e^{T - T^\dagger}|\text{HF}\rangle.
+
+This allows for the total energy of the system to be calculated by the
+variational minimisation
+
+.. math::
+
+   \label{eqn4-8}
+       E = \min_{\vec{t}}\langle\text{HF}|e^{T^{\dagger}-T}He^{T-T^{\dagger}}|\text{HF}\rangle.
+
+While UCC is not tractable on classical computers (the expansion of
+:math:`e^{T^{\dagger}-T}He^{T-T^{\dagger}}` does not truncate (see [Taube2006]_) it is in fact well suited for
+calculation on a quantum computer. The reason for this is related to the
+exponential scaling of the number of states that can be represented by a
+register of qubits, compared to the linear scaling of classical
+computers. Thus, using UCC as an ansatz for the wavefunction, a variational search for the ground state energy can be implemented in a hybrid quantum-classical algorithm
+(discussed :doc:`here <qc_on_qc>`).
+
+As with CC, UCC can usually be truncated to double excitations, yielding
+the UCCSD method. Furthermore, UCCSD can be generalised to include
+excitation amplitudes which are not just restricted to excitations from
+occupied to virtual orbitals, but include excitations throughout the
+entire orbital space. This amounts to extending the summation indices of
+:math:`T_{1}` and :math:`T_{2}` to include occupied to occupied, virtual to virtual, occupied to virtual,
+and virtual to occupied excitations. This yields a generalised ansatz
+for the UCCSD wavefunction, and is known as UCCGSD [Lee2019]_.
+
+.. _sec-methods-basis:
+
+Basis Sets
+----------
+
+Basis sets are necessary to represent electronic orbitals in a quantum
+chemistry calculation. The spatial orbitals which enter a Slater
+determinant, for example, can be expanded in terms of a finite set of
+basis functions [Szabo1996]_. Many different kinds
+of basis sets are possible. A minimal basis set refers to the minimum
+number of such functions required to represent the ground state
+electronic structure. For example, the H\ :math:`_{2}` molecule has the
+minimal basis set known as the STO-3G basis set. The 1\ :math:`s`
+orbital of a hydrogen atom (centred at the origin) can be represented by
+a "Slater-type-orbital" (STO), which has the form
+
+.. math::
+
+   \label{eqn4-9}
+       \phi_{1s}^{\texttt{sto}}(\zeta,\vec{r}) = \sqrt{\frac{\zeta^3}{\pi}}e^{-\zeta |\vec{r}|},
+
+where :math:`\zeta` is the Slater orbital exponent (= 1 for H), and
+:math:`r` is the radial distance from the atomic centre. The label
+STO-3G refers to the STO being fit to a linear combination (a
+contraction) of 3 Gaussian functions, where a Gaussian function has the
+form
+
+.. math::
+
+   \label{eqn4-10}
+       \phi^{\texttt{gto}}(\alpha,\vec{r}) = \bigg(\frac{2\alpha}{\pi}\bigg)^{3/4}e^{-\alpha |\vec{r}|^2},
+
+and :math:`\alpha` is the Gaussian orbital exponent. The orbital
+exponents are a measure of the spatial extent of the basis functions; a
+small exponent means a large diffuse function, while a large exponent
+means a dense, compact function. The higher angular momentum orbitals
+can be written as polynomial (in the components of :math:`\vec{r}`)
+generalisations of these functions. While STOs are generally more
+accurate, GTOs are more practical for calculations. Consider the
+two-electron integral shown above (:math:`h_{i,j,k,l}`). In
+the general case, each of the four orbitals in this integral is centred
+on a different atom, and the resulting four-centre integral can be
+computationally demanding with STOs. However, the product of two GTOs
+:math:`\phi^{\texttt{gto},a}` and :math:`\phi^{\texttt{gto},b}` with
+different centres is, up to a constant, just another GTO with an
+exponent that is the sum of exponents of :math:`\phi^{\texttt{gto},a}`
+and :math:`\phi^{\texttt{gto},b}`, and centred on a line joining
+:math:`\phi^{\texttt{gto},a}` and :math:`\phi^{\texttt{gto},b}`. This
+makes it easier to evaluate two-electron integrals using GTOs, hence
+their use. The higher accuracy of STOs, however, leads to the necessity
+to fit linear combinations of GTOs to STOs. This is known as contraction
+of the Gaussian functions, and can be expressed as
+
+.. math::
+
+   \label{eqn4-11}
+       \phi_{n}^{c-\texttt{gto}}(\vec{r}) = \sum_{\nu}^{N}d_{\nu n}\phi_{\nu}^{\texttt{gto}}(\alpha_{\nu n},\vec{r})
+
+Where :math:`n` labels the spatial atomic orbital, :math:`d_{\nu n}` are
+contraction coefficients, :math:`\alpha_{\nu n}` are the orbital
+contraction exponents, and for STO-3G, :math:`N` = 3. Basis functions
+which adequately approximate STOs, while having the benefit of easier
+integrals of GTOs, can be generated by the appropriate choice of
+contraction coefficients, exponents, and :math:`N`.
+
+``EUMEN`` also supports the selection of active and frozen orbitals. Active orbitals contribute directly to
+the electronic integrals (:math:`h_{i,j}` and :math:`h_{i,j,k,l}`), and are involved in the cluster amplitudes
+needed to generate the correlated wavefunction ansatz. By default, all
+orbitals included in the calculation are active. Frozen orbitals are not
+explicitly included in the Hamiltonian or wavefunction, but are simply
+included as a contribution to the electrostatic energy of the atomic
+cores. In addition, the contribution of the frozen orbitals are
+projected out of the active orbitals, resulting in an effective
+screening of the interaction between the remaining active orbitals.
+
+In ``EUMEN``, `PySCF <https://sunqm.github.io/pyscf>`_ is used to acquire relevant data for
+the molecule in the uncorrelated ground state (e.g. the HF state), data
+that is needed before starting a (quantum) calculation of the correlated ground
+state. This includes data for atoms in the molecule, the geometry of the
+molecule, the basis sets used to represent the orbitals, and the electronic integrals involved in the matrix elements of the
+Hamiltonian.
+
+
+.. [Bartlett2007] Bartlett and Musial, Rev. Mod. Phys. 2007, 79, 291
+.. [Taube2006] Taube and Bartlett, Int. J. Quantum Chem. 2006, 106, 3393
+.. [Lee2019] Lee, Huggins, Head-Gordon, and Whaley, J. Chem. Theory. Comput. 2019, 15, 311
+.. [Szabo1996] Szabo and Ostlund, Modern Quantum Chemistry, Dover Publications 1996

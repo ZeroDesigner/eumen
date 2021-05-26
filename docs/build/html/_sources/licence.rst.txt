@@ -1,0 +1,6 @@
+Software Licence
+================
+
+Copyright 2021 Cambridge Quantum Computing
+
+``EUMEN`` is currently in closed beta.  For enquiries regarding beta access to ``EUMEN``, please contact `eumen-support@cambridgequantum.com <eumen-support@cambridgequantum.com>`_.

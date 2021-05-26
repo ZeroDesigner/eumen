@@ -1,0 +1,243 @@
+Quantum Chemistry on Quantum Computers
+======================================
+
+
+.. _qubit-mapping:
+The Jordan-Wigner Transformation
+--------------------------------
+
+When performing calculations on a quantum computer, electronic states of
+the system of interest need to be mapped to qubit states within the
+quantum computer (and vice-versa). The occupation of each electronic
+state can be represented by a qubit state, specifically the
+:math:`|1\rangle_{i}` qubit state represents the electronic spin orbital
+:math:`i` being occupied, while the :math:`|0\rangle_{i}` qubit state
+represents an unoccupied electronic state :math:`i`. However, the
+antisymmetric nature of the electronic wavefunction, which stems from
+the anticommutativity of the fermionic operators, needs to be
+transferred to the qubits. On the other hand, qubit states are
+represented by spins and manipulated by unitary operations corresponding to
+rotations around the Bloch sphere [Nielsen2010]_. The latter are
+expressed as Pauli matrices
+{:math:`\sigma^{x}, \sigma^{y}, \sigma^{z}`}, or tensor products thereof
+known as Pauli strings. Hence, the problem of mapping between electrons
+and qubits translates to "keeping track" of the electronic exchange
+symmetry within the string of Pauli operators that define gate
+operations on the qubits. In ``EUMEN``, this can be accomplished using either the
+Jordan-Wigner (JW) transformation [McArdle2020]_ or the Bravyi-Kitaev (BK) transformation [Seeley2012]_. 
+
+Using JW as an example, the fermion ladder operators can be expressed in terms of the Pauli spin matrices
+as follows
+
+.. math::
+
+   \label{eqn4-12}
+       c_{i}^{\dagger} = \Bigg(\prod_{j<i}\sigma_{j}^{z}\Bigg)\sigma_{i}^{-}
+
+.. math:: c_{i} = \bigg(\prod_{j<i}\sigma_{j}^{z}\bigg)\sigma_{i}^{+}
+
+where
+
+.. math::
+
+   \label{eqn4-13}
+       \sigma_{i}^{\pm} = (\sigma_{i}^{x} \pm i\sigma_{i}^{y})/2 .
+
+In the Pauli basis, operators can be expressed as sums over Pauli
+strings :math:`P_{\alpha}`. For example the qubit Hamiltonian is
+
+.. math::
+
+   \label{eqn4-14}
+       H_{Q} = \sum_{\alpha}h_{\alpha}P_{\alpha} = \sum_{\alpha}h_{\alpha}\bigotimes_{i}^{N_{Q}}\sigma_{i}^{\alpha_{i}}.
+
+Where :math:`h_\alpha` is the coefficient of each Pauli term. Note the
+same index :math:`i` is used for electronic spin orbitals and qubits; in
+fact, the number of spin orbitals in the calculation is equal the number
+of qubits :math:`N_{Q}`. Also, the cluster operator and electronic
+wavefunction can be written in terms of Pauli strings. Keeping in mind
+that the strings :math:`P_{\alpha}` depend on the set of control
+parameters :math:`\vec{\theta}`, which parametrize gate operations on
+qubits, the energy expectation value is thus a function of these
+parameters that will be variationally optimised in order to find the
+minimum energy.
+
+Variational Quantum Eigensolver
+-------------------------------
+
+The variational quantum eigensolver (VQE) is a method for calculating
+the ground state energy and wavefunction on NISQ devices. It is a hybrid
+quantum-classical algorithm that starts from an initial HF state from
+which one obtains a correlated ground state, using an initial guess for the cluster amplitudes (e.g.
+randomised or using values from second-order Møller-Plesset perturbation
+theory). This ground state ansatz is transformed to a Pauli basis using
+the JW transformation, so that
+:math:`e^{T - T^{\dagger}}|\text{HF}\rangle = |\Psi\rangle \rightarrow |\Psi(\vec{\theta})\rangle`,
+allowing for encoding of the fermionic wavefunction onto the qubit
+register (the "Entangler" step in figure :numref:`VQE`).
+
+The expectation value of the Hamiltonian in this basis is calculated as
+a sum over Pauli strings (tensor products of Pauli terms), where each
+string is measured on the quantum device. This is performed by
+repeatedly measuring the state of each qubit, with the individual Pauli
+terms applied as prerotations before measurement to rotate the
+measurement axis. Expectation values of Pauli strings are then
+determined by multiplying the measurement results and averaging over
+many repetitions. Summing over the Pauli strings then yields an estimation
+for the ground state energy (the cost function to be minimised) for that
+particular set of amplitudes. The energy and amplitudes are then fed
+into a classical computer that variationally optimises the amplitudes as
+parameters of a cost function, yielding a set of parameters which
+lower the energy. These new parameters are fed back into the quantum
+device to yield a new measurement of the energy and a new set of
+parameters. This iterative procedure is repeated until a convergence
+criterion is reached (e.g. the energy stops changing from one iteration
+to the next). As this method is variational, the energy at the end of
+the VQE procedure is an approximation to the ground state energy. This
+is shown schematically in the figure :numref:`VQE`.
+
+.. _VQE:
+
+.. figure:: VQE.png 
+   
+   Schematic illustration of the variational quantum eigensolver algorithm.
+
+
+The iterative VQE procedure can be summarised by the following steps:
+
+#. With the qubit register initialised to all zeros
+   :math:`|000...\rangle`, the qubit representation of the HF state is
+   prepared by applying a set of (non-parametrized) gate operations
+   (for example, X gates) to the qubit register
+
+   .. math:: |\text{HF}\rangle_{Q} = U_{\text{HF}}|000...\rangle
+
+#. From the initial HF state, the correlated wavefunction ansatz is
+   prepared by applying the JW transformed UCC cluster operator, i.e. a
+   set of parametrized unitary rotations of the qubits states, to
+   :math:`|\text{HF}\rangle_{Q}`
+
+   .. math:: |\Psi(\vec{\theta}\rangle = U(\vec{\theta})|\text{HF}\rangle_{Q}
+
+#. The energy is then measured by measuring the expectation value of
+   each Pauli string over the qubit representation of the wavefunction
+   ansatz, and summing over the measurements
+
+   .. math::
+
+      \label{eqn4-15}
+          E(\vec{\theta}) = \sum_{\alpha}h_{\alpha}\langle\Psi(\vec{\theta})|P_{\alpha}|\Psi(\vec{\theta})\rangle \geq E_{min} .
+   
+   .. _sec-methods-vqe:
+
+   The results of multiple measurements are then averaged to obtain the
+   average expectation value of energy.
+
+#. The energy and qubit rotation parameters are then fed into a
+   classical computer that runs an optimisation algorithm (e.g.
+   conjugate-gradient, or BFGS), which returns a new set of parameters.
+
+#. The new set of parameters are then used to prepare a new ansatz state
+   :math:`|\Psi(\vec{\theta})\rangle`, from which a new sum over pauli
+   expectation values, and hence a new energy expectation value, is
+   calculated.
+
+#. The previous two steps are repeated until a convergence criteria,
+   typically the difference in energy between VQE iterations, is below
+   some threshold value.
+
+.. _sec-methods-qse:
+
+Quantum Subspace Expansion
+--------------------------
+
+While VQE calculates ground state energies, the quantum subspace
+expansion (QSE) is a method for calculating energies of excited
+molecular states [McClean2017]_. It can also improve
+the accuracy of the ground state calculation relative to VQE. The QSE
+method solves a generalised eigenvalue problem within the
+:math:`\eta`-electron Fock space,
+
+.. math::
+
+   \label{eqn4-16}
+       H^{QSE}C = S^{QSE}C\varepsilon,
+
+in which the Hamiltonian matrix :math:`H_{QSE}` has a set of
+eigenvectors :math:`C`. This is a linear response
+expansion of the ground state. The elements of :math:`H_{QSE}` are
+formed by the application of fermionic operators to the (optimised)
+ground state, i.e. a projection to the subspace written as
+
+.. math::
+
+   \label{eqn4-17}
+       H_{ijkl}^{QSE} = \langle\Psi|c_ic_j^{\dagger}Hc_k^{\dagger}c_l|\Psi\rangle,
+
+where each set of creation/annihilation operators expresses the addition
+and removal of electrons to and from spin orbitals in this subspace. As
+the subspace contains states which are not necessarily orthogonal, the
+overlap matrix is needed
+
+.. math::
+
+   \label{eqn4-18}
+       S_{ijkl}^{QSE} = \langle\Psi|c_ic_j^{\dagger}c_k^{\dagger}c_l|\Psi\rangle.
+
+The elements of these matrices are also mapped
+to qubit representations (using the JW or BK) which in turn
+generates the matrices from the ground state
+:math:`|\Psi(\vec\theta)\rangle` obtained from the VQE algorithm, and the
+qubit representations of the matrix elements are measured on the quantum
+hardware. The matrix :math:`H_{ijkl}^{QSE}` is then diagonalized
+(classically) to obtain the eigenvalue matrix :math:`\varepsilon`.
+
+.. _sec-methods-penalty:
+
+Penalty Functions
+-----------------
+
+The ability to include a penalty term to the energy evaluation during VQE optimisation is available
+in ``EUMEN``. This ia a useful tool which can correct for
+errors in the energy (e.g. arising from spin contamination when the
+wavefunction is expressed in an unrestricted form) [Ryabinkin2019]_. Hence the optimiser
+will "penalise" the energy, such that when the parameters are optimised
+the offending term will be reduced towards 0 as the energy is minimised.
+
+Penalty functions can also be used to calculate excited state energies [Higgott2019]_ in a method called Variational Quantum Deflation (VQD). To see this, the
+VQE algorithm can be extended to optimise the following function
+
+.. math::
+
+   \label{eqn4-19}
+       E_{\text{oc}}(\vec{\theta}') = \langle\Psi_{ex}(\vec{\theta}')|H|\Psi_{ex}(\vec{\theta}')\rangle + \beta|\langle\Psi_{ex}(\vec{\theta}')|\Psi_{gs}(\vec{\theta})\rangle|^{2}
+
+where :math:`H` is the Hamiltonian corresponding to the ground state
+(used in the optimisation of the ground state energy in VQE),
+:math:`|\Psi_{ex}(\vec{\theta}')\rangle` is the wavefunction ansatz for the
+excited state, :math:`|\Psi_{gs}(\vec{\theta})\rangle`
+is the previously optimised ground state wavefunction, and :math:`\beta`
+is a sufficiently large positive constant (dictating the effective
+"size" of the penalty). A typical choice for :math:`\beta` is the
+absolute value of the energy of the VQE optimised ground state,
+\|\ :math:`\langle\Psi_{gs}(\vec{\theta})|H|\Psi_{gs}(\vec{\theta})\rangle`
+[Lee2019]_. This is effectively an energy optimization subject to the constraint that
+excited state must be orthogonal to the (previously optimised) ground state. 
+It can be extended to the next excited state by adding an additional orthogonality constraint. The advantage of this method over QSE is the
+improved scaling of computational resources, as the circuit depth (the
+number of time steps in the quantum circuit, where a time step is a
+parallel arrangement of gates across the qubit register executed
+simultaneously) required to implement VQD will scale linearly in the
+excitation level relative to VQE, hence twice the circuit depth for the
+first excited state. However, due to the
+accumulation of errors from one excitation level to the next, this
+method is best suited only for low lying excited states.
+
+
+.. [Nielsen2010] Nielsen and Chuang, Quantum Computation and Information, Cambridge University Press 2010
+.. [Seeley2012] Seeley, Richard, and Love, J. Chem. Phys. 2012, 137, 224109
+.. [McArdle2020] McArdle, Endo, Aspuru-Guzik, Benjamin, and Yuan, Rev. Mod. Phys. 2020, 92, 015003
+.. [McClean2017] McClean, Kimchi-Schwartz, Carter, and de Jong, Phys. Rev. A 2017, 95, 042308
+.. [Ryabinkin2019] Ryabinkin, Genin, and Izmaylov, J. Chem. Theory Comput. 2019, 15, 249
+.. [Higgott2019] Higgott, Wang, Brierley, Quantum 2019, 3, 156 
+.. [Lee2019] Lee, Huggins, Head-Gordon, and Whaley, J. Chem. Theory. Comput. 2019, 15, 311

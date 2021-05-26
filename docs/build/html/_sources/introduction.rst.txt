@@ -1,0 +1,57 @@
+Introduction
+============
+The advent of quantum computation represents the beginning of a new era
+for molecular simulation, allowing exact quantum calculations to be executed.
+
+``EUMEN`` serves as an enabler to tackle problems intractable on classical
+computers.
+By providing access the latest quantum hardware,
+``EUMEN`` accelerates application research
+with industry in the following areas:
+
+- pharmaceuticals,
+- specialty chemicals
+- performance materials,
+- agrochemicals,
+- renewable energy,
+
+
+Users of ``EUMEN`` will have access to world leading circuit optimisation
+protocols developed within a paradigm of barrier free use of all
+quantum architectures and total portability of end products.
+This allows users to attain the maximal value from noisy intermediate
+scale quantum (NISQ) devices. In addition,
+every user of ``EUMEN`` will have access to the expertise and technical-support
+of CQC’s quantum chemistry team.
+
+An overview of ``EUMEN`` platform is presented in :numref:`EumenOverview`.
+
+.. _EumenOverview:
+
+.. figure:: EUMEN_workflow.png
+
+   Schematic overview of the ``EUMEN`` platform.
+
+Once the system of interest is specified by the client, this is taken as
+the input to ``EUMEN``. The quantum instruction set is prepared, executed on and
+retrieved from a quantum backend using CQC's quantum SDK, tket.
+The quantum backend (accessed via tket) can be a cloud-provisioned
+quantum computer or a CPU simulator designed to emulate calculations on
+quantum hardware. ``EUMEN`` provides the logic to go post-process the
+quantum measurement result to useful chemistry information.
+
+``EUMEN`` utilises
+CQC the retargetable compiler
+`tket <https://cqcl.github.io/pytket/build/html/index.html>`_ python
+to access quantum hardware. Through tket,
+support is provided for:
+
+- `Google Cirq <https://www.github.com/quantumlib/cirq>`_,
+- `IBMQ Qiskit <https://qiskit.org/>`_,
+- `AQT <https://www.aqt.eu/services/>`_,
+- `Honeywell Quantum System <https://www.honeywell.com/en-us/company/quantum>`_,
+- `Amazon Braket <https://aws.amazon.com/braket/>`_,
+- `Microsoft QSharp <https://docs.microsoft.com/en-us/quantum/>`_,
+- `Qulacs <https://docs.qulacs.org/en/latest/index.html>`_,
+- `Rigetti pyQuil <http://rigetti.com/forest>`_ and `IonQ <https://ionq.com/>`_.
+

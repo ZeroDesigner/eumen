@@ -1,0 +1,77 @@
+Embedding and Fragmentation Approaches 
+======================================
+
+Density Matrix Embedding Theory
+-------------------------------
+
+Density Matrix Embedding Theory (DMET) [Knizia2013]_ is an embedding procedure in which the
+molecule is partitioned into a series of fragments, each one coupled to an effective potential or bath that simulates the effect of the rest of the molecule on it. In this way, the ground state energy of the molecule is obtained a a sum of fragment energies.
+
+We assume that the Hilbert space describing the system can be decomposed into two smaller subspaces, corresponding to the fragment and the bath. Then, we apply the Schmidt decomposition technique to the total ground state wavefunction:
+
+.. math::
+
+   \Psi = \sum_i^M \lambda_i |\alpha_i\rangle|\beta_i\rangle 
+
+
+In this expression, :math:`|\alpha_i\rangle` are the states of the fragment, and the :math:`|\beta_i\rangle` correspond to states of the bath. :math:`\lambda_i` is the corresponding coupling parameter, which describes how entangled the two subsystems are and takes on values between 0 and 1.
+
+As :math:`\Psi` is unknown, we approximate it by a lower level theory, like for example a Hartree-Fock wavefunction, :math:`\Psi_{HF}`. This approximation allows us to express the :math:`|\alpha_i\rangle` and :math:`|\beta_i\rangle` states by partitioning the one-electron reduced density matrix (1-RDM) into two subsystems and diagonalising the resulting matrices.
+
+DMET starts by solving the molecule with a Hartree-Fock calculation, where an entanglement term :math:`\hat{u}` is added to the electronic Hamiltonian to account for the coupling between the fragment and the bath:
+
+.. math::
+   
+   \hat{H}' = \hat{H} + \hat{u}
+
+
+:math:`\hat{u}` has the form:
+
+.. math:: 
+  
+  \hat{u} = \sum_x \sum_{ij\epsilon A^x} u_{ij}^x \hat{c}^{\dagger}_i\hat{c}_j
+
+
+where :math:`A^x` refers to the subspace defined by fragment :math:`x`, and :math:`\hat{c}_i` is a fermionic operator in the Schmidt space basis.
+
+The impurity Hamiltonian for each fragment :math:`x` is defined as:
+
+.. math:: 
+   
+   \hat{H}^x = \hat{P}^x\hat{H}\hat{P}^x -\mu_{glob}\sum_{i\epsilon A^x} \hat{c}^{\dagger}_i\hat{c}_i
+
+
+Here, :math:`P^x` is the projector onto the impurity space:
+
+.. math:: 
+
+   \hat{P}^x = \sum_{ij} |\alpha_i^x\rangle|\beta_j^x\rangle\langle\alpha_i^x|\langle\beta_j^x|
+
+
+:math:`\mu_{glob}` is a local chemical potential, independent of fragment :math:`x`, that is chosen to minimize a cost function dependent on the fragment's 1-RDM.
+
+In the one-shot DMET implementation (v\ |version|) only the chemical potential :math:`\mu_{glob}` is found. For the full DMET loop, the correlation potential is also optimized. The correlation potential, :math:`\hat{u}`, is chosen to match the 1-RDM obtained from the full system calculation with the 1-RDMs on each fragment site. All off-diagonal and diagonal elements are matched. To this end, we minimise the following cost function:
+
+.. math::
+
+   L^{u}(u) = \sum_x \sum_{ij\epsilon A^x} u_{ij}^x \hat{c}^{\dagger}_i\hat{c}_j ({\bf P}_{ij}^x - {\bf P}_{ij}^{HF}(u))^2
+
+
+The energy of the fragment is expressed as:
+
+.. math:: 
+
+   E^x = \sum_{i\epsilon A^x} \left[\sum_{j\epsilon A^x \cup B^x} \frac{2\tilde{h}_{ij}^x + \sum_c (2\tilde{V}^x_{icjc} - \tilde{V}^x_{iccj})}{2} {\bf P}_{ij}^x + \frac{1}{2} \sum_{jkl\epsilon A^x \cup B^x} \tilde{V}_{ijkl}\Gamma_{ijkl}^x\right]
+   
+
+In this equation, :math:`\tilde{h}_ij^x` and :math:`\tilde{V}^x_{icjc}` correspond to the one and two-electron integrals in the Schmidt basis, respectively, and :math:`\Gamma_{ijkl}` is the two-body reduced density matrix of the fragment.
+
+The density matrices for the subspace of each fragment are calculated with a high-level method. In ``EUMEN``, one may choose to calculate each fragment either classically or with one of the available quantum algorithms. This enables the mixing of algorithms for different fragments: less important fragments can be solved with a cheap classical method, while the important ones may be treated with a high-accuracy method. Once all these quantities have been calculated, the total energy of the molecule will consist of a sum of fragment energies plus the nuclear repulsion contribution:
+
+.. math:: 
+
+   E = \sum_x E^x +E_{nuc}
+
+
+
+.. [Knizia2013] Knizia and Chan, J. Chem. Theory Comput. 2013, 9, 1428 

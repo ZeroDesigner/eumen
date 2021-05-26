@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Quantum Chemistry &mdash; EUMEN 0.1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quantum Chemistry on Quantum Computers" href="qc_on_qc.html" />
+    <link rel="prev" title="Open Source Attribution" href="opensource.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/eumen_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="key_features.html">Highlighted Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Software Licence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="opensource.html">Open Source Attribution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Theory and Methods</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quantum Chemistry</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#coupled-cluster">Coupled Cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#basis-sets">Basis Sets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qc_on_qc.html">Quantum Chemistry on Quantum Computers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="var_q_sim.html">Variational Quantum Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="emb_frag.html">Embedding and Fragmentation Approaches</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EUMEN</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Quantum Chemistry</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="quantum-chemistry">
+<h1>Quantum Chemistry<a class="headerlink" href="#quantum-chemistry" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="coupled-cluster">
+<span id="sec-method-cc"></span><h2>Coupled Cluster<a class="headerlink" href="#coupled-cluster" title="Permalink to this headline">¶</a></h2>
+<p>The field of quantum chemistry largely relies on the development of
+methods for approximating the exact the many-electron wavefunction.
+Approximations are needed because of the intrinsic difficulty in solving
+the many-electron Schrödinger equation. The simplest (antisymmetric)
+solution is provided by the Hartree-Fock (HF) method. However, the HF
+method in general fails to provide energies within chemical accuracy due
+to the neglect of electronic correlation, beyond the exchange effects
+between parallel spins obtained by expressing the wavefunction as a
+single antisymmetrized product (Slater determinant) of spin orbitals.
+The next step beyond the HF approximation towards better descriptions of
+correlation involve expanding the wavefunction as a superposition of
+Slater determinants, in which the treatment of correlation is defined by
+the parametrisation of expansion coefficients (and the determinants
+included in the expansion). Including all determinants of the
+<span class="math notranslate nohighlight">\(\eta\)</span>-electron Fock space in the superposition, and applying this
+linearly to the HF state, is known as full configuration interaction
+(FCI). However, FCI is not size-extensive, and size-extensivity is
+important for accurate descriptions of chemical reaction barriers,
+atomization energies, etc <a class="reference internal" href="#bartlett2007" id="id1"><span>[Bartlett2007]</span></a>. A popular
+method of including electronic correlation while maintaining
+size-extensivity is to write the correlated wavefunction using the
+exponential ansatz</p>
+<div class="math notranslate nohighlight">
+\[\label{eqn4-1}
+    |\Psi\rangle = e^{T}|\text{HF}\rangle,\]</div>
+<p>where <span class="math notranslate nohighlight">\(|\text{HF}\rangle\)</span> is the HF ground state wavefunction, and
+<span class="math notranslate nohighlight">\(T\)</span> is the excitation operator, defined as</p>
+<div class="math notranslate nohighlight">
+\[\label{eqn4-2}
+    T = \sum_{n}^{N}T_{n}\]</div>
+<div class="math notranslate nohighlight">
+\[\label{eqn4-2a}
+    T_{1} = \sum_{a,p}t_{a}^{p}c_{p}^{\dagger}c_{a}\]</div>
+<div class="math notranslate nohighlight">
+\[\label{eqn4-2b}
+    T_{2} = \sum_{a,b,p,q}t_{a,b}^{p,q}c_{p}^{\dagger}c_{q}^{\dagger}c_{a}c_{b}.\]</div>
+<p>Here, parameters <span class="math notranslate nohighlight">\(t_{a}^{p}, t_{a,b}^{p,q}\)</span> are excitation
+amplitudes (or cluster amplitudes), and refer to single and double
+excitations, respectively. The set of excitation amplitudes included in
+a calculation can be written as the vector <span class="math notranslate nohighlight">\(\vec{t}\)</span>. The indices
+<span class="math notranslate nohighlight">\(a, b\)</span> denote occupied spin orbitals, and <span class="math notranslate nohighlight">\(p, q\)</span> denote
+unoccupied (virtual) spin orbitals. The fermionic operator
+<span class="math notranslate nohighlight">\(c_{a}^{\dagger}\)</span> (<span class="math notranslate nohighlight">\(c_{a}\)</span>) creates (annihilates) an
+electron in spin orbital <span class="math notranslate nohighlight">\(a\)</span>. This is the coupled cluster (CC)
+method, and the <span class="math notranslate nohighlight">\(e^{T}\)</span> term is referred to as the cluster
+operator. Truncating this at the level of double excitations defines the
+coupled cluster singles-doubles (CCSD) method, which for many systems of
+interest represents a reasonably good approximation. The CC energy is
+obtained by a projection of the Schrödinger equation</p>
+<div class="math notranslate nohighlight">
+\[\label{eqn4-3}
+    e^{-T}He^{T}|\text{HF}\rangle = E_{CC}|\text{HF}\rangle\]</div>
+<p>where the second-quantized molecular Hamiltonian is written as (note atomic units are used throughout this documentation)</p>
+<div class="math notranslate nohighlight">
+\[\label{eqn4-4}
+    H = \sum_{i,j}h_{i,j}c_{i}^{\dagger}c_{j} + \frac{1}{2}\sum_{i,j,k,l}h_{i,j,k,l}c_{i}^{\dagger}c_{j}^{\dagger}c_{k}c_{l} + V_{nuc} ,\]</div>
+<p><span class="math notranslate nohighlight">\(V_{nuc}\)</span> is the nuclear (classical) electrostatic repulsion, and
+the one- and two-body electronic terms are obtained from integrals of
+spin-orbitals obtained from a HF calculation</p>
+<div class="math notranslate nohighlight">
+\[\label{eqn4-5}
+    h_{i,j} = \int{d\mathbf{x}\phi_{i}^{*}(\mathbf{x})\bigg(\frac{-\nabla^{2}}{2}} - \sum_{A}\frac{Z_{A}}{|\mathbf{R}_{A} - \mathbf{r}|}\bigg)\phi_{j}(\mathbf{x})\]</div>
+<div class="math notranslate nohighlight">
+\[\label{eqn4-6}
+    h_{i,j,k,l} = \int{d\mathbf{x}_{1}d\mathbf{x}_{2}\frac{\phi_{i}^{*}(\mathbf{x}_{1})\phi_{j}^{*}(\mathbf{x}_{2})\phi_{k}(\mathbf{x}_{1})\phi_{l}(\mathbf{x}_{2})}{|\mathbf{r}_{1} - \mathbf{r}_{2}|}}.\]</div>
+<p>The index <span class="math notranslate nohighlight">\(A\)</span> labels atoms, <span class="math notranslate nohighlight">\(Z\)</span> is the nuclear charge,
+<span class="math notranslate nohighlight">\(R\)</span> is the atomic position in space, and <span class="math notranslate nohighlight">\(\mathbf{r}\)</span> is the
+electronic spatial coordinate. The variable <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>
+represents the collection of spatial and spin coordinates
+<span class="math notranslate nohighlight">\(\mathbf{x} = \{\mathbf{r}, s\}\)</span>. Unfortunately, the cluster
+operator is not unitary, which is required for the method to be
+variational. By rewriting the linear operator <span class="math notranslate nohighlight">\(T\)</span> as an anti-hermitian operator <span class="math notranslate nohighlight">\(T - T^\dagger\)</span>,
+the cluster operator then becomes unitary and we have the unitary coupled cluster (UCC)
+method. The correlated wavefunction relative to the HF state then becomes</p>
+<div class="math notranslate nohighlight">
+\[\label{eqn4-7}
+     |\Psi\rangle = e^{T - T^\dagger}|\text{HF}\rangle.\]</div>
+<p>This allows for the total energy of the system to be calculated by the
+variational minimisation</p>
+<div class="math notranslate nohighlight">
+\[\label{eqn4-8}
+    E = \min_{\vec{t}}\langle\text{HF}|e^{T^{\dagger}-T}He^{T-T^{\dagger}}|\text{HF}\rangle.\]</div>
+<p>While UCC is not tractable on classical computers (the expansion of
+<span class="math notranslate nohighlight">\(e^{T^{\dagger}-T}He^{T-T^{\dagger}}\)</span> does not truncate (see <a class="reference internal" href="#taube2006" id="id2"><span>[Taube2006]</span></a>) it is in fact well suited for
+calculation on a quantum computer. The reason for this is related to the
+exponential scaling of the number of states that can be represented by a
+register of qubits, compared to the linear scaling of classical
+computers. Thus, using UCC as an ansatz for the wavefunction, a variational search for the ground state energy can be implemented in a hybrid quantum-classical algorithm
+(discussed <a class="reference internal" href="qc_on_qc.html"><span class="doc">here</span></a>).</p>
+<p>As with CC, UCC can usually be truncated to double excitations, yielding
+the UCCSD method. Furthermore, UCCSD can be generalised to include
+excitation amplitudes which are not just restricted to excitations from
+occupied to virtual orbitals, but include excitations throughout the
+entire orbital space. This amounts to extending the summation indices of
+<span class="math notranslate nohighlight">\(T_{1}\)</span> and <span class="math notranslate nohighlight">\(T_{2}\)</span> to include occupied to occupied, virtual to virtual, occupied to virtual,
+and virtual to occupied excitations. This yields a generalised ansatz
+for the UCCSD wavefunction, and is known as UCCGSD <a class="reference internal" href="#lee2019" id="id3"><span>[Lee2019]</span></a>.</p>
+</div>
+<div class="section" id="basis-sets">
+<span id="sec-methods-basis"></span><h2>Basis Sets<a class="headerlink" href="#basis-sets" title="Permalink to this headline">¶</a></h2>
+<p>Basis sets are necessary to represent electronic orbitals in a quantum
+chemistry calculation. The spatial orbitals which enter a Slater
+determinant, for example, can be expanded in terms of a finite set of
+basis functions <a class="reference internal" href="#szabo1996" id="id4"><span>[Szabo1996]</span></a>. Many different kinds
+of basis sets are possible. A minimal basis set refers to the minimum
+number of such functions required to represent the ground state
+electronic structure. For example, the H<span class="math notranslate nohighlight">\(_{2}\)</span> molecule has the
+minimal basis set known as the STO-3G basis set. The 1<span class="math notranslate nohighlight">\(s\)</span>
+orbital of a hydrogen atom (centred at the origin) can be represented by
+a “Slater-type-orbital” (STO), which has the form</p>
+<div class="math notranslate nohighlight">
+\[\label{eqn4-9}
+    \phi_{1s}^{\texttt{sto}}(\zeta,\vec{r}) = \sqrt{\frac{\zeta^3}{\pi}}e^{-\zeta |\vec{r}|},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\zeta\)</span> is the Slater orbital exponent (= 1 for H), and
+<span class="math notranslate nohighlight">\(r\)</span> is the radial distance from the atomic centre. The label
+STO-3G refers to the STO being fit to a linear combination (a
+contraction) of 3 Gaussian functions, where a Gaussian function has the
+form</p>
+<div class="math notranslate nohighlight">
+\[\label{eqn4-10}
+    \phi^{\texttt{gto}}(\alpha,\vec{r}) = \bigg(\frac{2\alpha}{\pi}\bigg)^{3/4}e^{-\alpha |\vec{r}|^2},\]</div>
+<p>and <span class="math notranslate nohighlight">\(\alpha\)</span> is the Gaussian orbital exponent. The orbital
+exponents are a measure of the spatial extent of the basis functions; a
+small exponent means a large diffuse function, while a large exponent
+means a dense, compact function. The higher angular momentum orbitals
+can be written as polynomial (in the components of <span class="math notranslate nohighlight">\(\vec{r}\)</span>)
+generalisations of these functions. While STOs are generally more
+accurate, GTOs are more practical for calculations. Consider the
+two-electron integral shown above (<span class="math notranslate nohighlight">\(h_{i,j,k,l}\)</span>). In
+the general case, each of the four orbitals in this integral is centred
+on a different atom, and the resulting four-centre integral can be
+computationally demanding with STOs. However, the product of two GTOs
+<span class="math notranslate nohighlight">\(\phi^{\texttt{gto},a}\)</span> and <span class="math notranslate nohighlight">\(\phi^{\texttt{gto},b}\)</span> with
+different centres is, up to a constant, just another GTO with an
+exponent that is the sum of exponents of <span class="math notranslate nohighlight">\(\phi^{\texttt{gto},a}\)</span>
+and <span class="math notranslate nohighlight">\(\phi^{\texttt{gto},b}\)</span>, and centred on a line joining
+<span class="math notranslate nohighlight">\(\phi^{\texttt{gto},a}\)</span> and <span class="math notranslate nohighlight">\(\phi^{\texttt{gto},b}\)</span>. This
+makes it easier to evaluate two-electron integrals using GTOs, hence
+their use. The higher accuracy of STOs, however, leads to the necessity
+to fit linear combinations of GTOs to STOs. This is known as contraction
+of the Gaussian functions, and can be expressed as</p>
+<div class="math notranslate nohighlight">
+\[\label{eqn4-11}
+    \phi_{n}^{c-\texttt{gto}}(\vec{r}) = \sum_{\nu}^{N}d_{\nu n}\phi_{\nu}^{\texttt{gto}}(\alpha_{\nu n},\vec{r})\]</div>
+<p>Where <span class="math notranslate nohighlight">\(n\)</span> labels the spatial atomic orbital, <span class="math notranslate nohighlight">\(d_{\nu n}\)</span> are
+contraction coefficients, <span class="math notranslate nohighlight">\(\alpha_{\nu n}\)</span> are the orbital
+contraction exponents, and for STO-3G, <span class="math notranslate nohighlight">\(N\)</span> = 3. Basis functions
+which adequately approximate STOs, while having the benefit of easier
+integrals of GTOs, can be generated by the appropriate choice of
+contraction coefficients, exponents, and <span class="math notranslate nohighlight">\(N\)</span>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">EUMEN</span></code> also supports the selection of active and frozen orbitals. Active orbitals contribute directly to
+the electronic integrals (<span class="math notranslate nohighlight">\(h_{i,j}\)</span> and <span class="math notranslate nohighlight">\(h_{i,j,k,l}\)</span>), and are involved in the cluster amplitudes
+needed to generate the correlated wavefunction ansatz. By default, all
+orbitals included in the calculation are active. Frozen orbitals are not
+explicitly included in the Hamiltonian or wavefunction, but are simply
+included as a contribution to the electrostatic energy of the atomic
+cores. In addition, the contribution of the frozen orbitals are
+projected out of the active orbitals, resulting in an effective
+screening of the interaction between the remaining active orbitals.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">EUMEN</span></code>, <a class="reference external" href="https://sunqm.github.io/pyscf">PySCF</a> is used to acquire relevant data for
+the molecule in the uncorrelated ground state (e.g. the HF state), data
+that is needed before starting a (quantum) calculation of the correlated ground
+state. This includes data for atoms in the molecule, the geometry of the
+molecule, the basis sets used to represent the orbitals, and the electronic integrals involved in the matrix elements of the
+Hamiltonian.</p>
+<dl class="citation">
+<dt class="label" id="bartlett2007"><span class="brackets"><a class="fn-backref" href="#id1">Bartlett2007</a></span></dt>
+<dd><p>Bartlett and Musial, Rev. Mod. Phys. 2007, 79, 291</p>
+</dd>
+<dt class="label" id="taube2006"><span class="brackets"><a class="fn-backref" href="#id2">Taube2006</a></span></dt>
+<dd><p>Taube and Bartlett, Int. J. Quantum Chem. 2006, 106, 3393</p>
+</dd>
+<dt class="label" id="lee2019"><span class="brackets"><a class="fn-backref" href="#id3">Lee2019</a></span></dt>
+<dd><p>Lee, Huggins, Head-Gordon, and Whaley, J. Chem. Theory. Comput. 2019, 15, 311</p>
+</dd>
+<dt class="label" id="szabo1996"><span class="brackets"><a class="fn-backref" href="#id4">Szabo1996</a></span></dt>
+<dd><p>Szabo and Ostlund, Modern Quantum Chemistry, Dover Publications 1996</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="qc_on_qc.html" class="btn btn-neutral float-right" title="Quantum Chemistry on Quantum Computers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="opensource.html" class="btn btn-neutral float-left" title="Open Source Attribution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Cambridge Quantum Computing Ltd.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

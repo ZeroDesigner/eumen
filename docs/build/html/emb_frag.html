@@ -1,0 +1,267 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Embedding and Fragmentation Approaches &mdash; EUMEN 0.1.2 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Variational Quantum Simulation" href="var_q_sim.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/eumen_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="key_features.html">Highlighted Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Software Licence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="opensource.html">Open Source Attribution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Theory and Methods</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="theoretical_chemistry.html">Quantum Chemistry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qc_on_qc.html">Quantum Chemistry on Quantum Computers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="var_q_sim.html">Variational Quantum Simulation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Embedding and Fragmentation Approaches</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#density-matrix-embedding-theory">Density Matrix Embedding Theory</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EUMEN</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Embedding and Fragmentation Approaches</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="embedding-and-fragmentation-approaches">
+<h1>Embedding and Fragmentation Approaches<a class="headerlink" href="#embedding-and-fragmentation-approaches" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="density-matrix-embedding-theory">
+<h2>Density Matrix Embedding Theory<a class="headerlink" href="#density-matrix-embedding-theory" title="Permalink to this headline">¶</a></h2>
+<p>Density Matrix Embedding Theory (DMET) <a class="reference internal" href="#knizia2013" id="id1"><span>[Knizia2013]</span></a> is an embedding procedure in which the
+molecule is partitioned into a series of fragments, each one coupled to an effective potential or bath that simulates the effect of the rest of the molecule on it. In this way, the ground state energy of the molecule is obtained a a sum of fragment energies.</p>
+<p>We assume that the Hilbert space describing the system can be decomposed into two smaller subspaces, corresponding to the fragment and the bath. Then, we apply the Schmidt decomposition technique to the total ground state wavefunction:</p>
+<div class="math notranslate nohighlight">
+\[\Psi = \sum_i^M \lambda_i |\alpha_i\rangle|\beta_i\rangle\]</div>
+<p>In this expression, <span class="math notranslate nohighlight">\(|\alpha_i\rangle\)</span> are the states of the fragment, and the <span class="math notranslate nohighlight">\(|\beta_i\rangle\)</span> correspond to states of the bath. <span class="math notranslate nohighlight">\(\lambda_i\)</span> is the corresponding coupling parameter, which describes how entangled the two subsystems are and takes on values between 0 and 1.</p>
+<p>As <span class="math notranslate nohighlight">\(\Psi\)</span> is unknown, we approximate it by a lower level theory, like for example a Hartree-Fock wavefunction, <span class="math notranslate nohighlight">\(\Psi_{HF}\)</span>. This approximation allows us to express the <span class="math notranslate nohighlight">\(|\alpha_i\rangle\)</span> and <span class="math notranslate nohighlight">\(|\beta_i\rangle\)</span> states by partitioning the one-electron reduced density matrix (1-RDM) into two subsystems and diagonalising the resulting matrices.</p>
+<p>DMET starts by solving the molecule with a Hartree-Fock calculation, where an entanglement term <span class="math notranslate nohighlight">\(\hat{u}\)</span> is added to the electronic Hamiltonian to account for the coupling between the fragment and the bath:</p>
+<div class="math notranslate nohighlight">
+\[\hat{H}' = \hat{H} + \hat{u}\]</div>
+<p><span class="math notranslate nohighlight">\(\hat{u}\)</span> has the form:</p>
+<div class="math notranslate nohighlight">
+\[\hat{u} = \sum_x \sum_{ij\epsilon A^x} u_{ij}^x \hat{c}^{\dagger}_i\hat{c}_j\]</div>
+<p>where <span class="math notranslate nohighlight">\(A^x\)</span> refers to the subspace defined by fragment <span class="math notranslate nohighlight">\(x\)</span>, and <span class="math notranslate nohighlight">\(\hat{c}_i\)</span> is a fermionic operator in the Schmidt space basis.</p>
+<p>The impurity Hamiltonian for each fragment <span class="math notranslate nohighlight">\(x\)</span> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\hat{H}^x = \hat{P}^x\hat{H}\hat{P}^x -\mu_{glob}\sum_{i\epsilon A^x} \hat{c}^{\dagger}_i\hat{c}_i\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(P^x\)</span> is the projector onto the impurity space:</p>
+<div class="math notranslate nohighlight">
+\[\hat{P}^x = \sum_{ij} |\alpha_i^x\rangle|\beta_j^x\rangle\langle\alpha_i^x|\langle\beta_j^x|\]</div>
+<p><span class="math notranslate nohighlight">\(\mu_{glob}\)</span> is a local chemical potential, independent of fragment <span class="math notranslate nohighlight">\(x\)</span>, that is chosen to minimize a cost function dependent on the fragment’s 1-RDM.</p>
+<p>In the one-shot DMET implementation (v0.1.2) only the chemical potential <span class="math notranslate nohighlight">\(\mu_{glob}\)</span> is found. For the full DMET loop, the correlation potential is also optimized. The correlation potential, <span class="math notranslate nohighlight">\(\hat{u}\)</span>, is chosen to match the 1-RDM obtained from the full system calculation with the 1-RDMs on each fragment site. All off-diagonal and diagonal elements are matched. To this end, we minimise the following cost function:</p>
+<div class="math notranslate nohighlight">
+\[L^{u}(u) = \sum_x \sum_{ij\epsilon A^x} u_{ij}^x \hat{c}^{\dagger}_i\hat{c}_j ({\bf P}_{ij}^x - {\bf P}_{ij}^{HF}(u))^2\]</div>
+<p>The energy of the fragment is expressed as:</p>
+<div class="math notranslate nohighlight">
+\[E^x = \sum_{i\epsilon A^x} \left[\sum_{j\epsilon A^x \cup B^x} \frac{2\tilde{h}_{ij}^x + \sum_c (2\tilde{V}^x_{icjc} - \tilde{V}^x_{iccj})}{2} {\bf P}_{ij}^x + \frac{1}{2} \sum_{jkl\epsilon A^x \cup B^x} \tilde{V}_{ijkl}\Gamma_{ijkl}^x\right]\]</div>
+<p>In this equation, <span class="math notranslate nohighlight">\(\tilde{h}_ij^x\)</span> and <span class="math notranslate nohighlight">\(\tilde{V}^x_{icjc}\)</span> correspond to the one and two-electron integrals in the Schmidt basis, respectively, and <span class="math notranslate nohighlight">\(\Gamma_{ijkl}\)</span> is the two-body reduced density matrix of the fragment.</p>
+<p>The density matrices for the subspace of each fragment are calculated with a high-level method. In <code class="docutils literal notranslate"><span class="pre">EUMEN</span></code>, one may choose to calculate each fragment either classically or with one of the available quantum algorithms. This enables the mixing of algorithms for different fragments: less important fragments can be solved with a cheap classical method, while the important ones may be treated with a high-accuracy method. Once all these quantities have been calculated, the total energy of the molecule will consist of a sum of fragment energies plus the nuclear repulsion contribution:</p>
+<div class="math notranslate nohighlight">
+\[E = \sum_x E^x +E_{nuc}\]</div>
+<dl class="citation">
+<dt class="label" id="knizia2013"><span class="brackets"><a class="fn-backref" href="#id1">Knizia2013</a></span></dt>
+<dd><p>Knizia and Chan, J. Chem. Theory Comput. 2013, 9, 1428</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="var_q_sim.html" class="btn btn-neutral float-left" title="Variational Quantum Simulation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Cambridge Quantum Computing Ltd.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

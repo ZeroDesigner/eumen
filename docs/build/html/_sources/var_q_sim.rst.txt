@@ -1,0 +1,73 @@
+Variational Quantum Simulation
+==============================
+
+Imaginary Time Evolution
+------------------------
+
+In the Imaginary Time Evolution (ITE) algorithm [Yuan2019]_, a trial wavefunction is evolved using an imaginary time propagator to
+obtain the ground state of the system of interest. For a system with Hamiltonian, :math:`H`, evolving in real time, :math:`t`, the propagator is
+given by
+
+.. math::
+
+   |\Psi(\tau)\rangle = A(\tau)e^{-H\tau}|\Psi(0)\rangle
+
+   A(\tau) = \frac{1}{\langle\Psi(0)|e^{-H\tau}|\Psi(0)\rangle}
+
+
+where :math:`\tau = it` corresponds to the imaginary time variable. One can apply a Wick rotation to this expression to obtain:
+
+.. math::
+
+   \frac{\partial |\Psi(\tau)\rangle}{\partial \tau} = - (H - E\tau)|\Psi(\tau)\rangle
+
+
+Evolution is non-unitary, and therefore can not directly be mapped to a quantum circuit. However, it can be simulated by recasting the propagation into a variational problem. To this end, a parameterised wavefunction is defined via an ansatz
+
+.. math::
+
+   |\Psi(\tau)\rangle \simeq |\Phi(\vec{\Theta}(\tau))\rangle = U(\Theta_0)U(\Theta_1)... U(\Theta_n)|\phi_0\rangle
+
+
+where :math:`U(\Theta_i)` are the parameterised building blocks of the ansatz, and the time-dependent Schrödinger equation is transformed according to the McLachlan variational principle:
+
+.. math::
+
+   \delta ||(\frac{\partial}{\partial \tau} + H - E_{\tau})|\Psi(\tau)\rangle|| = 0    
+
+
+where :math:`||\rho|| = \text{Tr}(\sqrt{\rho\rho^\dagger})` is the trace norm of a state. Projecting :math:`|\Psi(\tau)\rangle` onto :math:`|\Phi(\vec{\Theta}(\tau))\rangle`, the desired imaginary time evolution is projected over the manifold of the ansatz space. The evolution of the parameters is obtained from the differential equation:
+
+.. math::
+
+   \sum_i A_{ij} \dot{\Theta}_j = C_i
+
+
+where
+
+.. math::
+   
+   A_{ij} = Re(\frac{\partial \langle\Phi(\tau)|}{\partial \Theta_i} \frac{\partial |\Phi(\tau)\rangle}{\partial \Theta_j})
+
+   C_{i} = Re(\sum_{\alpha} \lambda_{\alpha} \frac{\partial \langle\Phi(\tau)|}{\partial \Theta_i} h_{\alpha} |\Phi(\tau)\rangle)
+
+
+and :math:`h_{\alpha}` and :math:`\lambda_{\alpha}` are the Pauli terms and coefficients of the Hamiltonian. :math:`A_{ij}` and :math:`C_i` can be measured on a quantum computer with appropriate quantum circuits.
+With :math:`A(\tau)` and :math:`C(\tau)` at time :math:`\tau`, the imaginary time evolution over a small interval :math:`\delta\tau` can be simulated by evaluating:
+
+.. math:
+
+   \vec{\dot{\Theta}}(\tau) = A^{-1} (\tau) \vec{C}(\tau)
+
+
+Parameters can be updated with an appropriate update rule, such as the Euler rule:
+
+.. math:: 
+  
+   \vec{\Theta}i(\tau + \delta\tau) \simeq \vec{\Theta}(\tau) + \vec{\dot{\Theta}}(\tau)\delta\tau = \vec{\Theta}(\tau) + A^{-1} (\tau) \vec{C}(\tau)\delta\tau
+
+
+Thus, the process consists of repeatedly solving the parameterized Schrödinger equation over a small timestep and updating the parameters for the next step. If the initial state has a non-zero overlap with the ground state, the propagation in imaginary time will evolve the system into a very good approximation to the ground state, in the infinite :math:`\tau` limit. In practice, the algorithm finishes after a pre-specified energy threshold is reached or after a defined number of time steps. With respect to the canonical VQE method, this approach has the advantage of not requiring a classical optimization step, thus being resilient to the barren plateau problem.
+
+
+.. [Yuan2019] Yuan, Endo, Zhao, Li, and Benjamin, Quantum 2019, 3, 191

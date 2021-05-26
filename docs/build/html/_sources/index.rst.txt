@@ -1,0 +1,31 @@
+EUMEN
+===================================
+
+.. image:: CQC_logo_png.png
+   :width: 150px
+   :align: right
+
+``EUMEN`` is an enterprise grade quantum hardware
+computational chemistry platform developed and maintained
+by `CQC <https://cambridgequantum.com/>`_.  ``EUMEN`` is currently in closed beta.  For enquiries regarding beta access to ``EUMEN``, please contact `eumen-support@cambridgequantum.com <eumen-support@cambridgequantum.com>`_.
+
+To install ``EUMEN``: ``pip install eumen -i <index-url>``. The ``<index-url>`` is provided with the beta credentials.  After installation we recommend getting started by checking out the tutorials included in the private documentation.
+
+.. toctree::
+   :caption: Getting Started
+   :maxdepth: 1
+
+   introduction
+   installation
+   key_features
+   licence
+   opensource
+
+.. toctree::
+   :caption: Theory and Methods
+   :maxdepth: 1
+
+   theoretical_chemistry
+   qc_on_qc
+   var_q_sim
+   emb_frag
