@@ -1,28 +1,11 @@
 Introduction
 ============
-The advent of quantum computation represents the beginning of a new era
-for molecular simulation, allowing exact quantum calculations to be executed.
+The advent of quantum computation represents the beginning of a new era for molecular and material simulation, allowing exact quantum calculations to be executed.
+``EUMEN`` is CQC’s state-of-the art python-based quantum computational chemistry package and development ecosystem for the optimal execution of quantum chemistry and materials science simulations on quantum computers.
+Developed through close collaboration with our Fortune500 partners, ``EUMEN``’s modular workflow enables both computational chemists and quantum algorithm developers to easily mix and match the latest quantum algorithms with advanced subroutines and error mitigation techniques to obtain ‘best-in-class’ results using NISQ devices.
+``EUMEN`` is integrated with CQC’s  SDK, tket™️, to maximise device performance across all NISQ architectures, leveraging tket’s leading circuit optimization and qubit routing algorithms to greatly reduce computational requirements for electronic structure simulations.
+``EUMEN`` is currently being leveraged in the simulation of industrially relevant systems much larger and more complex than previously possible using standard quantum computational techniques thanks to the integration of advanced embedding methods. Examples include using ``EUMEN`` to simulate porous nanomaterials known as metal organic frameworks for application in next-generation carbon capture and storage.
 
-``EUMEN`` serves as an enabler to tackle problems intractable on classical
-computers.
-By providing access the latest quantum hardware,
-``EUMEN`` accelerates application research
-with industry in the following areas:
-
-- pharmaceuticals,
-- specialty chemicals
-- performance materials,
-- agrochemicals,
-- renewable energy,
-
-
-Users of ``EUMEN`` will have access to world leading circuit optimisation
-protocols developed within a paradigm of barrier free use of all
-quantum architectures and total portability of end products.
-This allows users to attain the maximal value from noisy intermediate
-scale quantum (NISQ) devices. In addition,
-every user of ``EUMEN`` will have access to the expertise and technical-support
-of CQC’s quantum chemistry team.
 
 An overview of ``EUMEN`` platform is presented in :numref:`EumenOverview`.
 
@@ -32,13 +15,13 @@ An overview of ``EUMEN`` platform is presented in :numref:`EumenOverview`.
 
    Schematic overview of the ``EUMEN`` platform.
 
-Once the system of interest is specified by the client, this is taken as
+Once the system of interest is specified by the user, this is taken as
 the input to ``EUMEN``. The quantum instruction set is prepared, executed on and
 retrieved from a quantum backend using CQC's quantum SDK, tket.
 The quantum backend (accessed via tket) can be a cloud-provisioned
 quantum computer or a CPU simulator designed to emulate calculations on
-quantum hardware. ``EUMEN`` provides the logic to go post-process the
-quantum measurement result to useful chemistry information.
+quantum hardware. ``EUMEN`` provides the logic to post-process the
+quantum measurement result to give industrially relevant chemical information.
 
 ``EUMEN`` utilises
 CQC the retargetable compiler
