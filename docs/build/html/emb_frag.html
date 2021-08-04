@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Embedding and Fragmentation Approaches &mdash; EUMEN 0.1.3 documentation</title>
+  <title>Embedding and Fragmentation Approaches &mdash; EUMEN 0.1.4 documentation</title>
   
 
   
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.1.3
+                0.1.4
               </div>
             
           
@@ -199,7 +199,7 @@ molecule is partitioned into a series of fragments, each one coupled to an effec
 <div class="math notranslate nohighlight">
 \[\hat{P}^x = \sum_{ij} |\alpha_i^x\rangle|\beta_j^x\rangle\langle\alpha_i^x|\langle\beta_j^x|\]</div>
 <p><span class="math notranslate nohighlight">\(\mu_{glob}\)</span> is a local chemical potential, independent of fragment <span class="math notranslate nohighlight">\(x\)</span>, that is chosen to minimize a cost function dependent on the fragment’s 1-RDM.</p>
-<p>In the one-shot DMET implementation (v0.1.3) only the chemical potential <span class="math notranslate nohighlight">\(\mu_{glob}\)</span> is found. For the full DMET loop, the correlation potential is also optimized. The correlation potential, <span class="math notranslate nohighlight">\(\hat{u}\)</span>, is chosen to match the 1-RDM obtained from the full system calculation with the 1-RDMs on each fragment site. All off-diagonal and diagonal elements are matched. To this end, we minimise the following cost function:</p>
+<p>In the one-shot DMET implementation (v0.1.4) only the chemical potential <span class="math notranslate nohighlight">\(\mu_{glob}\)</span> is found. For the full DMET loop, the correlation potential is also optimized. The correlation potential, <span class="math notranslate nohighlight">\(\hat{u}\)</span>, is chosen to match the 1-RDM obtained from the full system calculation with the 1-RDMs on each fragment site. All off-diagonal and diagonal elements are matched. To this end, we minimise the following cost function:</p>
 <div class="math notranslate nohighlight">
 \[L^{u}(u) = \sum_x \sum_{ij\epsilon A^x} u_{ij}^x \hat{c}^{\dagger}_i\hat{c}_j ({\bf P}_{ij}^x - {\bf P}_{ij}^{HF}(u))^2\]</div>
 <p>The energy of the fragment is expressed as:</p>
